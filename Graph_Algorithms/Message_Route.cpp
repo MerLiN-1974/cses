@@ -32,7 +32,7 @@ int main() {
     q.pop();
 
     for (int v : Alist[u]) {
-      if (parent[v] == -1) {
+      if (parent[v] != -1) {
         parent[v] = u;
         q.push(v);
 
