@@ -3,6 +3,7 @@
 #include <vector>
 
 using namespace std;
+using ll = long long;
 
 int main() {
   ios::sync_with_stdio(false);
@@ -11,31 +12,25 @@ int main() {
   int n, x;
   cin >> n >> x;
 
-  vector<int> price(n);
-  for (auto &p : price)
-    cin >> p;
-  vector<int> page(n);
-  for (auto &p : page)
-    cin >> p;
+  vector<int> prices(n), pages(n);
+  for (auto &price : prices)
+    cin >> price;
+  for (auto &page : pages)
+    cin >> page;
 
-  // NOTE: dp[i][j] = max pages in first i pages with max budget j
-  vector<int> prev(x + 1, 0), curr(x + 1, 0);
-
-  for (int i = 1; i <= n; i++) {
-    int curr_page = page[i - 1];
-    int curr_price = price[i - 1];
-    for (int j = 1; j <= x; j++) {
-      curr[j] = prev[j];
-
-      if (j - curr_price >= 0) {
-        curr[j] = max(curr[j], prev[j - curr_price] + curr_page);
+  vector<ll> prev(x + 1, 0);
+  for (int i = 0; i < n; i++) {
+    vector<ll> dp(x + 1, 0);
+    for (int j = 0; j <= x; j++) {
+      dp[j] = prev[j];
+      if (j - prices[i] >= 0) {
+        dp[j] = max(dp[j], prev[j - prices[i]] + pages[i]);
       }
     }
-
-    prev = curr;
+    prev = dp;
   }
 
-  cout << curr[x] << "\n";
+  cout << prev[x] << "\n";
 
   return 0;
 }
